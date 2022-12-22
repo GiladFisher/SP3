@@ -12,7 +12,7 @@ void shift_element(int *arr, int i){
 }
 void insertion_sort(int* arr, int len){
     for (int i = 1; i < len; i++){
-        if (*(arr + i) < *(arr + i - 1)){
+        if (*(arr + i) < *(arr + i - 1)){ // the previous elements are already sorted so if the element in bigger the the previous one, its the biggest yet
             int temp = *(arr + i);
             if ( i == 1){
                 shift_element(arr, 1);
@@ -20,16 +20,17 @@ void insertion_sort(int* arr, int len){
             }
             else{
                 for (int j = i - 2; j >= 0; j--){
-                if (temp > *(arr + j)){
-                    shift_element((arr + j), i - j);
+                    if (temp > *(arr + j)) // if our element is bigger than the one in arr[j]
+                    {
+                    shift_element((arr + j), i - j); // shift_element() only needs to shift (i-j) elements 
                     *(arr + j + 1) = temp;
                     break;
-                }
-                if (j == 0){
+                    }
+                    if (j == 0){ // if we reached zero than our element is the smallest 
                     shift_element(arr, i);
                     *(arr) = temp;
+                    }
                 }
-            }
             }
         }
     }
