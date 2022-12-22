@@ -10,7 +10,7 @@ FLAGS=-Wall
 all: isort txtfind
 
 isort: $(MAIN) isort.a # the main file. using the static liabrary
-	$(CC) $(FLAGS) -o isort $(MAIN) my_mat.a -lm
+	$(CC) $(FLAGS) -o isort $(MAIN) isort.a -lm
 
 isort.a: isort.o # makes the static liabrary from the object file
 	$(AR) -rcs isort.a isort.o
