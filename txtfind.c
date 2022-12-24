@@ -49,6 +49,15 @@ int similar(char *str1, char *str2){
     return 1;
 }
 
+// the next method will get a string pointer nstr the size of w_len+1
+// and will copy the first w_len chars in ogstr followed by '\0'
+void copyword(char *nstr, char *ogstr, int w_len){
+    for (int i = 0; i < w_len; i++){
+        *(nstr + i) = *(ogstr + i);
+    }
+    *(nstr + w_len) = '\0';
+}
+
 int main(){
     char st[WORD];
     char st2[WORD];
@@ -57,8 +66,12 @@ int main(){
 
     // int w_len = 0;
     // w_len = getword(st);
-    int ans = -1;
-    ans = similar(st, st2);
-    printf("%d\n",ans);
+
+    // int ans = -1;
+    // ans = similar(st, st2);
+
+    int w_len = 3;
+    copyword(st, st2, w_len);
+    printf("%s\n",st);
     return 0;
 }
