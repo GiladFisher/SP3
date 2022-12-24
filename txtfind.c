@@ -58,25 +58,23 @@ void copyword(char *nstr, char *ogstr, int w_len){
     *(nstr + w_len) = '\0';
 }
 
-void print_similaar_words(char *word, char *txt){
-    char *txtp = txt;
-    while (*txtp)
+void print_similar_words(char *word, char *txt){
+    while (*txt)
     {
-        int w_len = getword(txtp);
-        char curr_w[WORD];
-        copyword(curr_w, txtp, w_len);
-        printf("current word:  %s.\n", curr_w);
-        if( similar(word, curr_w)){
-            printf("%s\n",curr_w);
+        int w_len = getword(txt);
+        char *nstr = (char *)malloc((w_len + 1) * sizeof(char));
+        copyword(nstr, txt, w_len);
+        if (similar(word, nstr)){
+            printf("%s\n", nstr);
         }
-        txtp = (txtp + w_len + 1);
-        if ( (*txtp == '\n') || (*txtp == '\t') || (*txtp == ' ')){
-            txtp = (txtp + 1);
+        txt = (txt + w_len +1);
+        if(*nstr){
+            free(nstr);
         }
-        printf("current txt:  %d \n", w_len);       
+
+               
     }
     
-
 
 }
 
@@ -94,7 +92,7 @@ int main(){
 
     // int w_len = 3;
 
-    print_similaar_words(st, st2);
+    print_similar_words(st, st2);
     // printf("%s\n",st);
 
     return 0;
