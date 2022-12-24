@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #define WORD 30
 
 int getword(char w[]){
     int len = 0;
     char *cp = w;
     while(*cp){
-        printf("%c\n", *cp);
         if((*cp == '\n') || (*cp == '\t') || (*cp == ' ')){
             break;
         }
@@ -58,6 +58,28 @@ void copyword(char *nstr, char *ogstr, int w_len){
     *(nstr + w_len) = '\0';
 }
 
+void print_similaar_words(char *word, char *txt){
+    char *txtp = txt;
+    while (*txtp)
+    {
+        int w_len = getword(txtp);
+        char curr_w[WORD];
+        copyword(curr_w, txtp, w_len);
+        printf("current word:  %s.\n", curr_w);
+        if( similar(word, curr_w)){
+            printf("%s\n",curr_w);
+        }
+        txtp = (txtp + w_len + 1);
+        if ( (*txtp == '\n') || (*txtp == '\t') || (*txtp == ' ')){
+            txtp = (txtp + 1);
+        }
+        printf("current txt:  %d \n", w_len);       
+    }
+    
+
+
+}
+
 int main(){
     char st[WORD];
     char st2[WORD];
@@ -70,8 +92,10 @@ int main(){
     // int ans = -1;
     // ans = similar(st, st2);
 
-    int w_len = 3;
-    copyword(st, st2, w_len);
-    printf("%s\n",st);
+    // int w_len = 3;
+
+    print_similaar_words(st, st2);
+    // printf("%s\n",st);
+
     return 0;
 }
