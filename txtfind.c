@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #define WORD 30
+#define LINE 256
 
 int getword(char w[]){
     int len = 0;
@@ -76,11 +77,47 @@ void print_similar_words(char *word, char *txt){
     }
 }
 
+int readlines(){
+    char temp = 'a';
+    while(1){
+        char *line = (char*)malloc(sizeof(char)*LINE);
+        int i = 0;
+        while(1){
+
+            scanf("%c", line + i);
+            temp = line[i];
+            if(temp == '\n'){
+                line[i] = '\0';
+                break;
+            }
+            if(temp == '\0'){
+                line[i] = '\0';
+                printf("ended on a 0\n");
+                break;
+            }
+            i++;
+        }
+        printf("%s\n", line);
+        /*
+            here, we will use a future function to determain if the line
+            containes the first word or not        
+        */
+        if (temp == '\0'){
+            break;
+        }
+        if(line){
+            free(line);
+        }
+    }    
+    return 0;
+}
+
 int main(){
     char st[WORD];
-    char st2[WORD];
-    fgets(st, WORD, stdin);
-    fgets(st2, WORD, stdin);
-    print_similar_words(st, st2);
+    // char st2[WORD];
+    // fgets(st, WORD, stdin);
+    // fgets(st2, WORD, stdin);
+    // print_similar_words(st, st2);
+    readlines(st);
     return 0;
 }
