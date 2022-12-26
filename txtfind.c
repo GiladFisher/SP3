@@ -113,6 +113,17 @@ int readlines(){
 }
 
 int main(){
+// save the first word
+// save the insctruction char 
+
+//   for the rest of the input:
+
+// case a, print_similar_words
+// case b, readlines
+
+
+
+// -------- tests
     char st[WORD];
     // char st2[WORD];
     // fgets(st, WORD, stdin);
