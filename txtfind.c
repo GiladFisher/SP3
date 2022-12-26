@@ -55,45 +55,32 @@ void copyword(char *nstr, char *ogstr, int w_len){
     for (int i = 0; i < w_len; i++){
         *(nstr + i) = *(ogstr + i);
     }
-    *(nstr + w_len) = '\0';
+    *(nstr + w_len) = 0;
 }
 
 void print_similar_words(char *word, char *txt){
+    int word_len = getword(word);
+    copyword(word, word, word_len);
     while (*txt)
     {
         int w_len = getword(txt);
         char *nstr = (char *)malloc((w_len + 1) * sizeof(char));
         copyword(nstr, txt, w_len);
         if (similar(word, nstr)){
-            printf("%s\n", nstr);
+            printf("similar: %s\n", nstr);
         }
-        txt = (txt + w_len +1);
-        if(*nstr){
+        txt = (char*)(txt + w_len +1);
+        if(nstr){
             free(nstr);
         }
-
-               
     }
-    
-
 }
 
 int main(){
     char st[WORD];
     char st2[WORD];
-    scanf("%s",st);
-    scanf("%s",st2);
-
-    // int w_len = 0;
-    // w_len = getword(st);
-
-    // int ans = -1;
-    // ans = similar(st, st2);
-
-    // int w_len = 3;
-
+    fgets(st, WORD, stdin);
+    fgets(st2, WORD, stdin);
     print_similar_words(st, st2);
-    // printf("%s\n",st);
-
     return 0;
 }
