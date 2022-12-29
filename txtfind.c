@@ -4,6 +4,7 @@
 #define WORD 30
 #define LINE 256
 
+// gets a string and returns the length of the first word
 int getword(char w[]){
     int len = 0;
     char *cp = w;
@@ -59,6 +60,7 @@ void copyword(char *nstr, char *ogstr, int w_len){
     *(nstr + w_len) = 0;
 }
 
+// will perform the "option 'a'"
 void print_similar_words(char *word, char *txt){
     int word_len = getword(word);
     copyword(word, word, word_len);
@@ -77,6 +79,9 @@ void print_similar_words(char *word, char *txt){
     }
 }
 
+
+//this supposed to read a line at a time. 
+// but it might be a bad idea
 int readlines(){
     char temp = 'a';
     while(1){
