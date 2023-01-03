@@ -39,6 +39,7 @@ int main()
             if( strstr(line,str) != NULL ) { printf("%s",line); } 
             memset(line,0,LINE);
         } 
+        printf("\n");
     }
 
 
@@ -59,6 +60,7 @@ int main()
             if(similar(word,str) == 1) { printf("%s\n", word); } 
             memset(word,0,WORD);
         }
+        printf("\n");
     }
 }
 
