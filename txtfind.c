@@ -36,10 +36,9 @@ int main()
         {
             temp = getLine(line);
             if(temp == -1) {break;}
-            if( strstr(line,str) != NULL ) { printf("%s",line); } 
+            if( strstr(line,str) != NULL ) { printf("%s\n",line); } 
             memset(line,0,LINE);
         } 
-        printf("\n");
     }
 
 
@@ -60,7 +59,7 @@ int main()
             if(similar(word,str) == 1) { printf("%s\n", word); } 
             memset(word,0,WORD);
         }
-        printf("\n");
+        
     }
 }
 
@@ -84,9 +83,9 @@ int getLine(char *line)
 
         line[count] = c;
 
-        if ((line[count] == '\n'  || line[count] == '\0')) 
+        if (line[count] == '\n') 
         { 
-            line[++count] = '\0';
+            line[count] = '\0';
             break; 
         }
         count++;
