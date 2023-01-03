@@ -134,6 +134,13 @@ int main(){
     // fgets(st, WORD, stdin);
     // fgets(st2, WORD, stdin);
     // print_similar_words(st, st2);
-    readlines(st);
+    // readlines(st);
+    int t = 0;
+    while(t < 250){
+        char c = getchar();
+        if (c == 0) break;
+        printf("%c", c);
+        t++;
+    }
     return 0;
 }

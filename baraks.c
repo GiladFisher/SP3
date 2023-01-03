@@ -17,69 +17,47 @@ int main()
     memset(str, 0, WORD);
     int strsize = getWord(str);          
     if(strsize == -1) { return -1; }
-
-    int counter = strsize;         // Creating a counter that saves the current position in the file byte-wise.
+         // Creating a counter that saves the current position in the file byte-wise.
 
     // Saving the chosen option ( a / b ).
 
-    char ch[2] = {0};                       
-
-    int chlen = getWord(ch);
-    if (chlen == -1) { return -1; }
-
-    counter += chlen;
+    char ch = getchar();                       
 
     // OPTION A : prints all the lines that contain the string stored in str[]
-
-    if ( strcmp(ch,"a") == 0 )
+    getchar();
+    if ( ch == 'a' )
     {
-        memset(ch,0,2);
-        chlen = getWord(ch);
-        if (chlen == -1) { return -1; }
-
-        counter += chlen;
-
         char line[LINE];
         memset(line,0,LINE);
 
         int temp = 0;
-
-        while (counter < size)
+       
+        while (1)
         {
-            temp = getLine(line, fp);
-
+            temp = getLine(line);
+            if(temp == -1) {break;}
             if( strstr(line,str) != NULL ) { printf("%s",line); } 
-            
             memset(line,0,LINE);
-            counter += temp;
         } 
     }
 
 
     // OPTION B : print all the words that have a difference of up to 1 char from the string stored in str[] 
 
-    if ( strcmp(ch,"b") == 0)
-    {      
-        memset(ch,0,2);
-        chlen = getWord(ch,fp);
-        if (chlen == -1) { return -1; }
-
-        counter += chlen;
-        
+    if ( ch == 'b')
+    {  
         char word[WORD];
         memset(word,0,WORD);
 
         int temp = 0;
 
-        while (counter < size)
+        while (1)
         {
-            
-            temp = getWord(word, fp);
-
-            if( similar(word,str) == 1 ) { printf("%s\n", word); } 
-            
+            temp = getWord(word);
+            // printf("word: %s,\n", word);
+            if (temp == -1) {break;}
+            if(similar(word,str) == 1) { printf("%s\n", word); } 
             memset(word,0,WORD);
-            counter += temp;
         }
     }
 }
@@ -97,15 +75,14 @@ int getLine(char *line)
     {
         char c = getchar();
 
-        if(count == LINE-2 && c != '\n')
+        if(count == LINE-2 && (c != '\n'))
         {
-            printf("Invalid string given in txt file");
             return -1;
         }
 
         line[count] = c;
 
-        if (line[count] == '\n') 
+        if ((line[count] == '\n'  || line[count] == '\0')) 
         { 
             line[++count] = '\0';
             break; 
@@ -126,21 +103,18 @@ int getWord(char *word)
     while(1)
     {
         char c = getchar();
-
-        if(count == WORD-1 && (( c != '\t' || c != ' ')  || c != '\n'))
+        if(count == WORD-1 && (( c != '\t' || c != ' ') || ( c != '\n' || c != '\r')))
         {
-            printf("Invalid word given in txt file");
 
             return -1;
         }
-        
-        if ((word[count] == ' ' || word[count] == '\t') || word[count] == '\n') 
+        word[count] = c;
+        if ((word[count] == ' ' || word[count] == '\t') || (word[count] == '\n' || word[count] == '\r') ) 
         { 
             word[count] = '\0';
             count++;
             break; 
         }
-
         count++;
     }
     return count;
@@ -151,6 +125,7 @@ int getWord(char *word)
 
 int similar(char *word, char *str)
 {
+    
     int flag = 0;
     int wlen = strlen(word);
     int slen = strlen(str);
@@ -161,7 +136,8 @@ int similar(char *word, char *str)
     if ( wlen - slen > 1 || wlen - slen < 0) { return 0; }
 
     while( (flag < 2 && ind1 < wlen) && ind2 < slen )
-    {
+    {   
+        
         if( word[ind1] != str[ind2] ) 
         { 
             flag++; 

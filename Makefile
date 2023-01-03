@@ -9,9 +9,8 @@ FLAGS=-Wall
 
 all: isort txtfind
 
-txtfind: txtfind.c
-	$(CC) $(FLAGS) -o txtfind txtfind.c
-
+txtfind: baraks.c
+	$(CC) $(FLAGS) -o txtfind baraks.c
 isort: $(MAIN) isort.a # the main file. using the static liabrary
 	$(CC) $(FLAGS) -o isort $(MAIN) isort.a -lm
 
