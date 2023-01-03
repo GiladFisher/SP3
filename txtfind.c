@@ -1,146 +1,156 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#define WORD 30
-#define LINE 256
+#include <string.h>
 
-// gets a string and returns the length of the first word
-int getword(char w[]){
-    int len = 0;
-    char *cp = w;
-    while(*cp){
-        if((*cp == '\n') || (*cp == '\t') || (*cp == ' ')){
-            break;
-        }
-        cp = (cp + 1);
-        len++;
-    }
-    return len;
-}
+int LINE = 256;
+int WORD = 30;
 
-// the next method will return 1 if it is possible to get str1 by removing at most one char from str2
-int similar(char *str1, char *str2){
-    int wrng_chrs = 0; // will contain the number of chars not consistant with str1
-    char *p1 = str1;
-    char *p2 = str2;
-    while(1){
-        if (!*p1){
-            if(*p2){
-                p2 = (p2 + 1);
-                wrng_chrs++;
-            }
-            else{
-                break;
-            }
-        }
-        else if(!*p2){
-            return 0;
-        }
-        else if (*p1 != *p2){
-            wrng_chrs++;
-            p2 = (p2 + 1);
-        }
-        else{
-            p2 = (p2 + 1);
-            p1 = (p1 + 1);
-        }
-    }
-    if(wrng_chrs > 1){
-        return 0;
-    }
-    return 1;
-}
+int getLine(char *line);
+int getWord(char *word);
+int similar(char *word, char *str);
 
-// the next method will get a string pointer nstr the size of w_len+1
-// and will copy the first w_len chars in ogstr followed by '\0'
-void copyword(char *nstr, char *ogstr, int w_len){
-    for (int i = 0; i < w_len; i++){
-        *(nstr + i) = *(ogstr + i);
-    }
-    *(nstr + w_len) = 0;
-}
+int main()
+{
+    // Saving the word we want to test with in the text.
 
-// will perform the "option 'a'"
-void print_similar_words(char *word, char *txt){
-    int word_len = getword(word);
-    copyword(word, word, word_len);
-    while (*txt)
+    char str[WORD];                         
+    memset(str, 0, WORD);
+    int strsize = getWord(str);          
+    if(strsize == -1) { return -1; }
+         // Creating a counter that saves the current position in the file byte-wise.
+
+    // Saving the chosen option ( a / b ).
+
+    char ch = getchar();                       
+
+    // OPTION A : prints all the lines that contain the string stored in str[]
+    getchar();
+    if ( ch == 'a' )
     {
-        int w_len = getword(txt);
-        char *nstr = (char *)malloc((w_len + 1) * sizeof(char));
-        copyword(nstr, txt, w_len);
-        if (similar(word, nstr)){
-            printf("similar: %s\n", nstr);
-        }
-        txt = (char*)(txt + w_len +1);
-        if(nstr){
-            free(nstr);
+        char line[LINE];
+        memset(line,0,LINE);
+
+        int temp = 0;
+       
+        while (1)
+        {
+            temp = getLine(line);
+            if(temp == -1) {break;}
+            if( strstr(line,str) != NULL ) { printf("%s",line); } 
+            memset(line,0,LINE);
+        } 
+    }
+
+
+    // OPTION B : print all the words that have a difference of up to 1 char from the string stored in str[] 
+
+    if ( ch == 'b')
+    {  
+        char word[WORD];
+        memset(word,0,WORD);
+
+        int temp = 0;
+
+        while (1)
+        {
+            temp = getWord(word);
+            // printf("word: %s,\n", word);
+            if (temp == -1) {break;}
+            if(similar(word,str) == 1) { printf("%s\n", word); } 
+            memset(word,0,WORD);
         }
     }
 }
 
 
-//this supposed to read a line at a time. 
-// but it might be a bad idea
-int readlines(){
-    char temp = 'a';
-    while(1){
-        char *line = (char*)malloc(sizeof(char)*LINE);
-        int i = 0;
-        while(1){
+// ## THE FUNCTIONS: ##
 
-            scanf("%c", line + i);
-            temp = line[i];
-            if(temp == '\n'){
-                line[i] = '\0';
-                break;
-            }
-            if(temp == '\0'){
-                line[i] = '\0';
-                printf("ended on a 0\n");
-                break;
-            }
-            i++;
-        }
-        printf("%s\n", line);
-        /*
-            here, we will use a future function to determain if the line
-            containes the first word or not        
-        */
-        if (temp == '\0'){
-            break;
-        }
-        if(line){
-            free(line);
-        }
-    }    
-    return 0;
-}
+// getLine() - inserting into a buffer the word from the file that starts at the file pointer.
 
-int main(){
-// save the first word
-// save the insctruction char 
+int getLine(char *line)
+{
+    int count = 0;
 
-//   for the rest of the input:
-
-// case a, print_similar_words
-// case b, readlines
-
-
-
-// -------- tests
-    char st[WORD];
-    // char st2[WORD];
-    // fgets(st, WORD, stdin);
-    // fgets(st2, WORD, stdin);
-    // print_similar_words(st, st2);
-    // readlines(st);
-    int t = 0;
-    while(t < 250){
+    while(1)
+    {
         char c = getchar();
-        if (c == 0) break;
-        printf("%c", c);
-        t++;
+
+        if(count == LINE-2 && (c != '\n'))
+        {
+            return -1;
+        }
+
+        line[count] = c;
+
+        if ((line[count] == '\n'  || line[count] == '\0')) 
+        { 
+            line[++count] = '\0';
+            break; 
+        }
+        count++;
     }
-    return 0;
+
+    return count;
+}
+
+
+// getWord() - inserting into a buffer the word from the file that starts at the file pointer.
+
+int getWord(char *word)
+{
+    int count = 0;
+
+    while(1)
+    {
+        char c = getchar();
+        if(count == WORD-1 && (( c != '\t' || c != ' ') || ( c != '\n' || c != '\r')))
+        {
+
+            return -1;
+        }
+        word[count] = c;
+        if ((word[count] == ' ' || word[count] == '\t') || (word[count] == '\n' || word[count] == '\r') ) 
+        { 
+            word[count] = '\0';
+            count++;
+            break; 
+        }
+        count++;
+    }
+    return count;
+}
+
+
+// Similar words mean that the only difference between them is up to 1 extra letter in word[]
+
+int similar(char *word, char *str)
+{
+    
+    int flag = 0;
+    int wlen = strlen(word);
+    int slen = strlen(str);
+    
+    int ind1 = 0;
+    int ind2 = 0;
+
+    if ( wlen - slen > 1 || wlen - slen < 0) { return 0; }
+
+    while( (flag < 2 && ind1 < wlen) && ind2 < slen )
+    {   
+        
+        if( word[ind1] != str[ind2] ) 
+        { 
+            flag++; 
+            ind1++;
+        }
+        
+        else
+        {
+            ind1++;
+            ind2++;
+        }
+    }
+
+    if(flag == 2) { return 0; }
+    else          { return 1; }
 }
