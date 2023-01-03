@@ -77,7 +77,7 @@ int getLine(char *line)
     {
         char c = getchar();
 
-        if(count == LINE-2 && (c != '\n'))
+        if(count == LINE-2 && (c != '\n' && c!= '\r'))
         {
             return -1;
         }
